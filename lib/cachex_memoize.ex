@@ -125,7 +125,8 @@ defmodule CachexMemoize do
 
   defp generate_memoized_function(call, opts, body, caller) do
     {name, args, guards} = extract_function_parts(call)
-    expires_in = Keyword.get(opts, :expires_in, :infinity)
+    # Support both :expires_in and :expires (Memoize uses both)
+    expires_in = Keyword.get(opts, :expires_in) || Keyword.get(opts, :expires, :infinity)
     impl_name = impl_function_name(name)
 
     # Handle default arguments
